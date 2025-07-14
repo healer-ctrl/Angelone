@@ -11,6 +11,7 @@ import logging
 import smtplib
 from concurrent.futures import ThreadPoolExecutor
 import queue
+import pyotp
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -505,7 +506,9 @@ if __name__ == "__main__":
     API_KEY = "Ca1mkcLk"
     CLIENT_CODE = "U20441"
     PIN = "2657"
-    TOTP_TOKEN = "921710"
+    token = "G5NV6C5WFPRFMUMDQLOUYUKUDA"
+    TOTP_TOKEN = pyotp.TOTP(token).now()
+    # TOTP_TOKEN = "921710"
     
     # Create multi-stock trading bot
     bot = MultiStockTradingBot(API_KEY, CLIENT_CODE, PIN, TOTP_TOKEN)

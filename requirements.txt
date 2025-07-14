@@ -1,0 +1,8 @@
+pandas
+numpy
+requests
+datetime
+websocket
+smartapi-python==1.4.8
+logging
+smtplib

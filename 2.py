@@ -18,6 +18,15 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+import os
+import threading
+
+class DummyHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"Bot is running!")
+
 class MultiStockTradingBot:
     def __init__(self, api_key, client_code, pin, totp_token):
         """
@@ -520,6 +529,7 @@ if __name__ == "__main__":
     print("Timeframe: 15 minutes")
     print("Monitoring stocks:", list(bot.stocks.keys()))
     print("=========================================")
+    
 
     # Start the HTTP server on the correct port
     def keep_alive():
@@ -546,24 +556,4 @@ if __name__ == "__main__":
     while True:
         time.sleep(60)
 
-
-
-import os
-from http.server import HTTPServer, BaseHTTPRequestHandler
-import threading
-
-class DummyHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.end_headers()
-        self.wfile.write(b"Bot is running!")
-
-def keep_alive():
-    port = int(os.environ.get("PORT", 10000))  # Fallback to 10000 for local
-    server = HTTPServer(("0.0.0.0", port), DummyHandler)
-    print(f"Starting dummy HTTP server on port {port}")
-    server.serve_forever()
-
-# Run server in background thread
-threading.Thread(target=keep_alive).start()
 

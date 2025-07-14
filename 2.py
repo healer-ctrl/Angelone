@@ -538,6 +538,8 @@ if __name__ == "__main__":
         if hasattr(bot, 'smtp_server') and bot.smtp_server:
             bot.smtp_server.quit()
 
+
+import os
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import threading
 
@@ -548,7 +550,11 @@ class DummyHandler(BaseHTTPRequestHandler):
         self.wfile.write(b"Bot is running!")
 
 def keep_alive():
-    server = HTTPServer(("0.0.0.0", 10000), DummyHandler)
+    port = int(os.environ.get("PORT", 10000))  # Fallback to 10000 for local
+    server = HTTPServer(("0.0.0.0", port), DummyHandler)
+    print(f"Starting dummy HTTP server on port {port}")
     server.serve_forever()
 
+# Run server in background thread
 threading.Thread(target=keep_alive).start()
+

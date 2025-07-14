@@ -501,42 +501,50 @@ class MultiStockTradingBot:
 
 
 # Example usage
+import os
+import threading
+
 if __name__ == "__main__":
-    # Angel One API credentials - Replace with your actual credentials
+    # Angel One API credentials
     API_KEY = "Ca1mkcLk"
     CLIENT_CODE = "U20441"
     PIN = "2657"
     token = "G5NV6C5WFPRFMUMDQLOUYUKUDA"
     TOTP_TOKEN = pyotp.TOTP(token).now()
-    # TOTP_TOKEN = "921710"
-    
-    # Create multi-stock trading bot
+
     bot = MultiStockTradingBot(API_KEY, CLIENT_CODE, PIN, TOTP_TOKEN)
-    
+
     print("=== Multi-Stock Angel One Trading Bot ===")
     print("Strategy: VWAP + EMA Crossover")
     print("Timeframe: 15 minutes")
-    print("Indicators: VWAP, EMA(5), EMA(50)")
     print("Monitoring stocks:", list(bot.stocks.keys()))
     print("=========================================")
-    
-    # Add more stocks if needed
-    # bot.add_stock("ICICIBANK", "ICICIBANK-EQ", "1330", quantity=1)
-    # bot.add_stock("AXISBANK", "AXISBANK-EQ", "5900", quantity=1)
-    
-    try:
-        # Start testing indicators for all stocks
-        bot.test_indicators()
-        
-        # Uncomment to start actual trading
-        # bot.start_trading()
-        
-    except Exception as e:
-        logger.error(f"Bot crashed: {str(e)}")
-    finally:
-        # Clean up email connection
-        if hasattr(bot, 'smtp_server') and bot.smtp_server:
-            bot.smtp_server.quit()
+
+    # Start the HTTP server on the correct port
+    def keep_alive():
+        port = int(os.environ.get("PORT", 10000))  # Render will set PORT
+        server = HTTPServer(("0.0.0.0", port), DummyHandler)
+        print(f"Web server started on port {port}")
+        server.serve_forever()
+
+    threading.Thread(target=keep_alive, daemon=True).start()
+
+    # Start your trading bot logic in a background thread
+    def start_bot():
+        try:
+            bot.test_indicators()  # Or use bot.start_trading() for real trading
+        except Exception as e:
+            logger.error(f"Bot crashed: {str(e)}")
+        finally:
+            if hasattr(bot, 'smtp_server') and bot.smtp_server:
+                bot.smtp_server.quit()
+
+    threading.Thread(target=start_bot).start()
+
+    # Prevent script from exiting
+    while True:
+        time.sleep(60)
+
 
 
 import os

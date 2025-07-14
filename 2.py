@@ -12,6 +12,7 @@ import smtplib
 from concurrent.futures import ThreadPoolExecutor
 import queue
 import pyotp
+from http.server import BaseHTTPRequestHandler, HTTPServer
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')

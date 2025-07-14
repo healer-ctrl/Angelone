@@ -537,3 +537,18 @@ if __name__ == "__main__":
         # Clean up email connection
         if hasattr(bot, 'smtp_server') and bot.smtp_server:
             bot.smtp_server.quit()
+
+from http.server import HTTPServer, BaseHTTPRequestHandler
+import threading
+
+class DummyHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"Bot is running!")
+
+def keep_alive():
+    server = HTTPServer(("0.0.0.0", 10000), DummyHandler)
+    server.serve_forever()
+
+threading.Thread(target=keep_alive).start()

@@ -17,6 +17,10 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+from zoneinfo import ZoneInfo
+IST = ZoneInfo("Asia/Kolkata")
+current_time = datetime.now(IST)
+
 
 class DummyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -97,8 +101,8 @@ class MultiStockTradingBot:
         Fetch historical data for calculating initial indicators
         """
         try:
-            to_date = datetime.now().strftime("%Y-%m-%d %H:%M")
-            from_date = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d %H:%M")
+            to_date = datetime.now(IST).strftime("%Y-%m-%d %H:%M")
+            from_date = (datetime.now(IST) - timedelta(days=days)).strftime("%Y-%m-%d %H:%M")
             print(to_date)
             print(from_date)
             historicParam = {
@@ -396,7 +400,7 @@ class MultiStockTradingBot:
         """
         Check if market is currently open
         """
-        current_time = datetime.now()
+        current_time = datetime.now(IST)
         current_hour = current_time.hour
         current_minute = current_time.minute
         
@@ -480,7 +484,7 @@ class MultiStockTradingBot:
         while True:
             try:
                 if self.is_market_open():
-                    current_time = datetime.now()
+                    current_time = datetime.now(IST)
                     
                     # Update data every 5 minutes
                     if current_time.minute % 15 == 0:
@@ -534,7 +538,7 @@ class MultiStockTradingBot:
         try:
             while True:
                 if self.is_market_open():
-                    current_time = datetime.now()
+                    current_time = datetime.now(IST)
                     
                     # Update data every 5 minutes
                     if current_time.minute % 5 == 0:
@@ -566,7 +570,7 @@ class MultiStockTradingBot:
                         
                         time.sleep(60)  # Wait 1 minute to avoid multiple executions
                 else:
-                    current_time = datetime.now()
+                    current_time = datetime.now(IST)
                     print(f"Market closed, current time: {current_time}")
                     time.sleep(300)  # Wait 5 minutes when market is closed
                     
@@ -679,7 +683,7 @@ class MultiStockTradingBot:
         Save backtest results to CSV files
         """
         try:
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            timestamp = datetime.now(IST).strftime('%Y%m%d_%H%M%S')
             
             if buy_signals:
                 buy_df = pd.DataFrame(buy_signals)

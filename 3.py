@@ -447,7 +447,7 @@ class MultiStockTradingBot:
                 # Check for sell signal
                 sell_signal, sell_data = self.check_sell_signal(df, stock_name)
                 if sell_signal :
-                    # current_price = self.get_ltp(stock_name)
+                    current_price = self.get_ltp(stock_name)
                     # if current_price:
                     #     if self.place_order_sell(stock_name, "SELL", current_price):
                     #         self.last_signal_times[stock_name] = datetime.now()

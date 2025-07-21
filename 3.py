@@ -441,6 +441,7 @@ class MultiStockTradingBot:
                     #     if self.place_order_buy(stock_name, "BUY", current_price):
                     #         self.last_signal_times[stock_name] = datetime.now()
                     #         print("Placed order")
+                    self.setup_email()
                     self.send_email_alert(f"BUY Signal - {stock_name}", 
                                                 f"Buy signal detected for {stock_name} at price {current_price}")
                 
@@ -452,6 +453,7 @@ class MultiStockTradingBot:
                     #     if self.place_order_sell(stock_name, "SELL", current_price):
                     #         self.last_signal_times[stock_name] = datetime.now()
                     #         print("Placed order")
+                    self.setup_email()
                     self.send_email_alert(f"SELL Signal - {stock_name}", 
                                                 f"Sell signal detected for {stock_name} at price {current_price}")
                 

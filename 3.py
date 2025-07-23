@@ -40,6 +40,7 @@ class MultiStockTradingBot:
         self.auth_token = None
         self.feed_token = None
         self.refresh_token = None
+        self.last_processed_minute = None
         
         # Multiple stocks configuration
         self.stocks = {
@@ -492,6 +493,7 @@ class MultiStockTradingBot:
                     # Update data every 5 minutes
                     current_bucket = (current_time.hour * 60 + current_time.minute)
                     if current_bucket != self.last_processed_minute:
+                        self.last_processed_minute=current_bucket
 
                         logger.info(f"Processing signals for {len(self.stocks)} stocks...")
                         

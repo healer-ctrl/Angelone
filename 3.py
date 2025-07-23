@@ -495,7 +495,7 @@ class MultiStockTradingBot:
                     logger.info(f"Waiting for 15 min interval... current time: {current_time}")
                     
                     # Update data every 5 minutes
-                    current_bucket = (current_time.hour * 60 + current_time.minute)
+                    current_bucket = (current_time.hour * 60 + current_time.minute) // 15
                     if current_bucket != self.last_processed_minute:
                         self.last_processed_minute=current_bucket
 
@@ -513,6 +513,10 @@ class MultiStockTradingBot:
                         
                         logger.info("Signal processing completed for all stocks")
                         time.sleep(60)  # Wait 1 minute to avoid multiple executions
+                    else:
+                        if current_time.minute % 5 == 0 and current_time.second < 5:
+                            logger.info(f"💓 Bot alive at {current_time.strftime('%H:%M:%S')} IST")
+                        
                 else:
                     logger.info("Market is closed. Waiting...")
                     time.sleep(300)  # Wait 5 minutes when market is closed

@@ -487,9 +487,12 @@ class MultiStockTradingBot:
             try:
                 if self.is_market_open():
                     current_time = datetime.now(IST)
+                    logger.info(f"Waiting for 15 min interval... current time: {current_time}")
                     
                     # Update data every 5 minutes
-                    if current_time.minute % 15 == 0:
+                    current_bucket = (current_time.hour * 60 + current_time.minute)
+                    if current_bucket != self.last_processed_minute:
+
                         logger.info(f"Processing signals for {len(self.stocks)} stocks...")
                         
                         # Process all stocks concurrently

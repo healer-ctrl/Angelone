@@ -779,4 +779,6 @@ if __name__ == "__main__":
                 bot.smtp_server.quit()
 
     threading.Thread(target=start_bot).start()
-
+    # Prevent script from exiting
+    while True:
+        time.sleep(1)

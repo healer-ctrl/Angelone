@@ -485,6 +485,9 @@ class MultiStockTradingBot:
         
         # Main trading loop
         while True:
+            if current_time.minute % 5 == 0 and current_time.second < 10:
+                logger.info(f"💓 Bot alive at {current_time.strftime('%H:%M:%S')} IST")
+
             try:
                 if self.is_market_open():
                     current_time = datetime.now(IST)

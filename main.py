@@ -228,9 +228,11 @@ def main():
 
     morning_executed = False
     afternoon_executed = False
+    print("we are starting the loop now")
 
     while True:
         now = datetime.datetime.now().time()
+        print(now)
 
         # Check for morning trade time (9:30:05)
         if now.hour == 9 and now.minute == 30 and now.second == 5 and not morning_executed:
